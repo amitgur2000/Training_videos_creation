@@ -1,0 +1,66 @@
+# The built-in demo site: "Request Desk", a small fake app in the skill's test fixture. It exercises
+# login, TOTP MFA with a remembered device, a terms page, a cookie banner, a skeleton loader, he/en UI
+# (RTL) and controls that differ between desktop and mobile. Serve it, then run any skill command:
+#
+#   python -m http.server 8765 --directory .claude/skills/training-videos/scripts/tests/fixture_site
+#   cp training/demo/.env.example training/demo/.env
+#
+# Every key is documented in .claude/skills/training-videos/site-profile.md.
+
+product:
+  name: Request Desk
+  spoken_name: Request Desk
+  audience: Employees who open requests to the IT, facilities and HR teams
+  vocabulary:
+    request: the word the users use for a ticket; never say ticket
+
+default_lang: he
+timezone: Asia/Jerusalem
+
+environments:
+  local:
+    url: http://localhost:8765
+    production: false
+default_env: local
+
+devices: [desktop, mobile]
+start_page: /dashboard.html
+test_id_attribute: data-testid
+
+source:
+  repo: ../..
+  ref: HEAD
+  i18n:
+    pattern: .claude/skills/training-videos/scripts/tests/fixture_site/locales/{locale}.json
+
+ui_language:
+  locales: [he, en]
+  fallback: en
+  set_by: localStorage
+  key: demo.locale
+  assert_html_lang: true
+
+wait_for_hidden: ['.skeleton']
+dismiss_off_camera: ['#cookie-accept']
+
+narration:
+  forbidden_words: [fixture, localhost, ticket]
+
+login:
+  required: true
+  url: /login.html
+  logged_in:
+    url_pattern: '(dashboard|request)\.html'
+    selector: '[data-testid="nav-dashboard"]'
+  username: {selector: '[data-testid="login-email"]', env: DEMO_USER}
+  password: {selector: '[data-testid="login-password"]', env: DEMO_PASS}
+  submit: '[data-testid="login-submit"]'
+  mfa:
+    method: totp
+    detect: {url_pattern: 'mfa\.html'}
+    code_input: '.digits input'
+    remember_device: '#remember'
+    submit: '[data-testid="mfa-submit"]'
+    totp_secret_env: DEMO_TOTP_SECRET
+  interstitials:
+    - {url_pattern: 'terms\.html', click: '#accept-terms'}

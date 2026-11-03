@@ -1,0 +1,52 @@
+# Site profile for the training-videos skill. Every key: .claude/skills/training-videos/site-profile.md
+# Login and MFA: login.md. Credentials go in .env next to this file (git-ignored), never here.
+
+product:
+  name: <Product name as on screen>
+  spoken_name: <How the narrator says it>
+  audience: <Who watches, in one line>
+  vocabulary: {}          # the audience's words: {thing: "what to call it, and what never to call it"}
+
+default_lang: en
+timezone: UTC
+
+environments:
+  staging:
+    url: https://staging.example.com
+    production: false
+default_env: staging
+
+devices: [desktop, mobile]
+start_page: /
+test_id_attribute: data-testid
+
+# source:                 # only with access to the site's code
+#   repo: ../site-repo
+#   ref: origin/main
+#   i18n:
+#     pattern: src/locales/{locale}/{ns}.json
+
+ui_language:
+  locales: [en]
+  fallback: en
+  set_by: none            # localStorage | cookie | query | none
+  key: ''
+  assert_html_lang: false
+
+wait_for_hidden: ['[aria-busy="true"]', '.skeleton', '.spinner']
+dismiss_off_camera: []
+
+narration:
+  forbidden_words: []
+
+login:
+  required: true
+  url: /login
+  logged_in:
+    url_pattern: null
+    selector: null        # something only a logged-in page has, e.g. the user menu
+  username: {env: SITE_USER}
+  password: {env: SITE_PASS}
+  mfa:
+    method: none          # none | totp | email | manual
+  interstitials: []

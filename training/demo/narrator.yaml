@@ -1,0 +1,7 @@
+# The narrator per language, written by edu_voices.py save. "default" applies to languages
+# without their own entry. voice: a prebuilt Gemini voice or a designed voice_... id.
+# persona: the style instruction for the voice. Changing either re-voices every line.
+he:
+  chosen: '2026-11-03'
+  persona: Calm, warm colleague who explains clearly
+  voice: Aoede

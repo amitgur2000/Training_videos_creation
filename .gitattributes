@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.wav binary
+
+# Training videos (training/<site>/, made by .claude/skills/training-videos). Keep these lines after any
+# broader binary rules in .gitattributes: the last match wins.
+training/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+training/**/*.m4a filter=lfs diff=lfs merge=lfs -text

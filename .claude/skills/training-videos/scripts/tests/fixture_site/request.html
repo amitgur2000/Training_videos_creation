@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><script src="app.js"></script></head>
+<body>
+<header>
+  <button data-testid="menu-toggle" data-t-aria="nav.menu">&#9776;</button>
+  <h1 data-t="app.name"></h1>
+</header>
+<div class="layout">
+  <nav class="side"></nav>
+  <main>
+    <form class="card" id="f">
+      <h2 data-t="request.title"></h2>
+      <label for="subject" data-t="request.subject"></label>
+      <input id="subject" type="text" data-testid="request-subject" data-t-placeholder="request.subjectHint">
+      <label for="category" data-t="request.category"></label>
+      <select id="category" data-testid="request-category">
+        <option value="it" data-t="request.categories.it"></option>
+        <option value="facilities" data-t="request.categories.facilities"></option>
+        <option value="hr" data-t="request.categories.hr"></option>
+      </select>
+      <label><input type="checkbox" id="urgent" data-testid="request-urgent"> <span data-t="request.urgent"></span></label>
+      <label for="details" data-t="request.details"></label>
+      <textarea id="details" rows="4" data-testid="request-details"></textarea>
+      <p class="error" id="err"></p>
+      <button class="btn" type="submit" data-testid="request-submit" data-t="request.submit"></button>
+      <button class="btn secondary" type="button" data-testid="request-cancel" data-t="request.cancel"></button>
+    </form>
+  </main>
+</div>
+<script>
+if (requireAuth()) {
+  loadLocale().then(() => { shell('request'); cookieBanner(); });
+  document.querySelector('[data-testid="request-cancel"]').onclick = () => go('dashboard.html');
+  document.getElementById('f').onsubmit = (e) => {
+    e.preventDefault();
+    if (!subject.value.trim()) { err.textContent = t('request.required'); return; }
+    const items = store.json('demo.requests', []);
+    items.unshift({ subject: subject.value.trim(), category: category.value, urgent: urgent.checked, details: details.value });
+    store.set('demo.requests', JSON.stringify(items));
+    store.set('demo.flash', 'request.saved');
+    go('dashboard.html');
+  };
+}
+</script>
+</body></html>

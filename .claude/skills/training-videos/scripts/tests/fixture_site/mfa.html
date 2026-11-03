@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><script src="app.js"></script></head>
+<body>
+<div class="center card">
+  <h2 data-t="mfa.title"></h2>
+  <p data-t="mfa.help"></p>
+  <form id="f">
+    <div class="digits">
+      <input inputmode="numeric" maxlength="1" aria-label="1"><input inputmode="numeric" maxlength="1" aria-label="2">
+      <input inputmode="numeric" maxlength="1" aria-label="3"><input inputmode="numeric" maxlength="1" aria-label="4">
+      <input inputmode="numeric" maxlength="1" aria-label="5"><input inputmode="numeric" maxlength="1" aria-label="6">
+    </div>
+    <label><input type="checkbox" name="remember-device" id="remember"> <span data-t="mfa.remember"></span></label>
+    <p class="error" id="err"></p>
+    <button class="btn" type="submit" data-testid="mfa-submit" data-t="mfa.submit"></button>
+  </form>
+</div>
+<script>
+loadLocale();
+document.getElementById('f').onsubmit = async (e) => {
+  e.preventDefault();
+  const code = [...document.querySelectorAll('.digits input')].map((i) => i.value).join('');
+  const now = Date.now();
+  const ok = [now - 30000, now, now + 30000];
+  const valid = (await Promise.all(ok.map((w) => totp(DEMO.totp, w)))).includes(code);
+  if (!valid) { err.textContent = t('mfa.failed'); return; }
+  store.set('demo.auth', 'ok');
+  if (remember.checked) store.set('demo.trusted', 'ok');
+  go(store.get('demo.terms') === 'ok' ? 'dashboard.html' : 'terms.html');
+};
+</script>
+</body></html>
