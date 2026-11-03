@@ -1,0 +1,15 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><script src="app.js"></script></head>
+<body>
+<div class="center card">
+  <h2 data-t="terms.title"></h2>
+  <p data-t="terms.body"></p>
+  <button class="btn" id="accept-terms" data-t="terms.accept"></button>
+</div>
+<script>
+loadLocale();
+if (store.get('demo.auth') !== 'ok') go('login.html');
+document.getElementById('accept-terms').onclick = () => { store.set('demo.terms', 'ok'); go('dashboard.html'); };
+</script>
+</body></html>

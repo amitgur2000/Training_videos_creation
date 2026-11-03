@@ -1,0 +1,8 @@
+# training/demo/.gitignore: local caches, review material, samples and secrets.
+# Only scripts, record.py files, subtitles, steps.json and the final mp4s are committed.
+.env
+.cache/
+.work/
+.explore/
+voices/
+__pycache__/

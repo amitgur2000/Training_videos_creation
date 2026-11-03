@@ -1,0 +1,28 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><script src="app.js"></script></head>
+<body>
+<div class="center card">
+  <h2 data-t="login.title"></h2>
+  <form id="f">
+    <label for="email" data-t="login.email"></label>
+    <input id="email" name="email" type="email" autocomplete="username" data-testid="login-email">
+    <label for="password" data-t="login.password"></label>
+    <input id="password" name="password" type="password" autocomplete="current-password" data-testid="login-password">
+    <p class="error" id="err"></p>
+    <button class="btn" type="submit" data-testid="login-submit" data-t="login.submit"></button>
+  </form>
+</div>
+<script>
+loadLocale().then(cookieBanner);
+document.getElementById('f').onsubmit = (e) => {
+  e.preventDefault();
+  setTimeout(() => {
+    if (email.value === DEMO.user && password.value === DEMO.pass) {
+      if (store.get('demo.trusted') === 'ok') { store.set('demo.auth', 'ok'); go('dashboard.html'); }
+      else go('mfa.html');
+    } else { err.textContent = t('login.failed'); }
+  }, 400);
+};
+</script>
+</body></html>

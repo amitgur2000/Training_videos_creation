@@ -1,0 +1,22 @@
+{
+  "app": { "name": "Request Desk" },
+  "cookie": { "text": "This site uses cookies.", "accept": "Accept" },
+  "login": { "title": "Sign in", "email": "Email", "password": "Password", "submit": "Sign in", "remember": "Remember me", "failed": "Wrong email or password." },
+  "mfa": { "title": "Two-step verification", "help": "Type the six-digit code from your authenticator app.", "remember": "Remember this device", "submit": "Verify", "failed": "Wrong code." },
+  "terms": { "title": "Terms of use", "body": "Before you start, please accept the terms of use.", "accept": "I accept" },
+  "nav": { "dashboard": "Dashboard", "newRequest": "New request", "logout": "Sign out", "menu": "Menu" },
+  "dashboard": { "title": "Dashboard", "newRequest": "New request", "myRequests": "My requests", "empty": "No requests yet.", "open": "Open", "closed": "Closed" },
+  "request": {
+    "title": "New request",
+    "subject": "Subject",
+    "subjectHint": "In one sentence, what do you need?",
+    "category": "Category",
+    "categories": { "it": "IT", "facilities": "Facilities", "hr": "Human resources" },
+    "urgent": "Urgent",
+    "details": "Details",
+    "submit": "Send",
+    "cancel": "Cancel",
+    "saved": "Your request was sent.",
+    "required": "Please fill in a subject."
+  }
+}

@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css"><script src="app.js"></script></head>
+<body>
+<header>
+  <button data-testid="menu-toggle" data-t-aria="nav.menu">&#9776;</button>
+  <h1 data-t="app.name"></h1>
+  <button class="btn desktop-only" data-testid="new-request" data-t="dashboard.newRequest"></button>
+</header>
+<div class="layout">
+  <nav class="side"></nav>
+  <main>
+    <h2 data-t="dashboard.title"></h2>
+    <div class="cards">
+      <div class="card"><b data-t="dashboard.open"></b><div id="n-open" data-testid="count-open">0</div></div>
+      <div class="card"><b data-t="dashboard.closed"></b><div data-testid="count-closed">0</div></div>
+    </div>
+    <div class="card">
+      <h3 data-t="dashboard.myRequests"></h3>
+      <div id="loading"><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div></div>
+      <ul class="list" id="list" data-testid="request-list" hidden></ul>
+    </div>
+  </main>
+</div>
+<button class="btn fab" data-testid="fab-new-request" data-t-aria="dashboard.newRequest">+</button>
+<script>
+if (requireAuth()) {
+  loadLocale().then(() => {
+    shell('dashboard');
+    cookieBanner();
+    const flash = store.get('demo.flash');
+    if (flash) { store.del('demo.flash'); toast(t(flash), 10000); }
+    document.querySelector('[data-testid="new-request"]').onclick = () => go('request.html');
+    document.querySelector('[data-testid="fab-new-request"]').onclick = () => go('request.html');
+    setTimeout(() => {
+      const items = store.json('demo.requests', []);
+      list.innerHTML = items.length
+        ? items.map((r) => `<li data-testid="request-item">${r.urgent ? '! ' : ''}${r.subject} &middot; ${t('request.categories.' + r.category)}</li>`).join('')
+        : `<li>${t('dashboard.empty')}</li>`;
+      document.getElementById('n-open').textContent = items.length;
+      loading.remove(); list.hidden = false;
+    }, 900);
+  });
+}
+</script>
+</body></html>
